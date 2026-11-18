@@ -10,7 +10,7 @@ const Q = [
   ["KESIAPAN & KONDISI KENDARAAN", "AC, ban, lampu, dan kelayakan mobil"],
   ["KOMUNIKASI & KONFIRMASI JADWAL", "Konfirmasi rute, jadwal, dan info keterlambatan"]
 ];
-const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Mobil kurang enak", "Nyetirnya nyaman 😌"];
+const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Nyetirnya nyaman 😌"];
 const LEVELS = ["Sangat Kurang", "Kurang", "Cukup", "Baik", "Sangat Baik"];
 const BAD = ["Waduh, segitu parahnya? 😱", "Aduh, maaf ya! Kami perbaiki 🙏", "Yah… ceritain di komentar dong 😢"];
 const GOOD = ["WOW! Juara banget! 🏆", "Mantap jiwa! 🔥", "Driver terbaik sejagat! 🌟", "Yeay! Bikin dia terbang ✨"];
@@ -54,9 +54,9 @@ function Face(host) {
 }
 
 /* ---------- navigasi layar ---------- */
-const S = ["w", "id1", "id2", ...Q.map((_, i) => "q" + i), "cm", "done"];
-let si = 0, qi = 0, info = {}, ans = new Array(Q.length).fill(0), wOn = false;
-const FW = Face($("#fw")), FQ = Face($("#fq")), FD = Face($("#fd"));
+const S = ["w", "id", ...Q.map((_, i) => "q" + i), "cm", "done"];
+let si = 0, qi = 0, info = {}, ans = new Array(Q.length).fill(0);
+const FQ = Face($("#fq")), FD = Face($("#fd"));
 
 function go(n, dir = 1) {
   si = n; const k = S[n], id = k[0] === "q" && k !== "q" ? "q" : k;
@@ -64,21 +64,18 @@ function go(n, dir = 1) {
   $("#" + id).classList.add("on", dir > 0 ? "fwd" : "bck");
   $("#pb").style.width = (n / (S.length - 2) * 100) + "%";
   $("#back").style.visibility = n >= 1 && k !== "done" ? "visible" : "hidden";
-  wOn = k === "w"; if (wOn) loop();
-  if (id === "q") showQ(+k.slice(1)); else if (k !== "done") setHue(k === "w" ? 220 : 220);
+  if (id === "q") showQ(+k.slice(1)); else if (k !== "done") setHue(220);
   window.scrollTo(0, 0);
-}
-function loop() {
-  const t0 = performance.now(), f = t => { if (!wOn) return; const v = .5 + .5 * Math.sin((t - t0) / 900 - 1.2); setHue(FW(v)); requestAnimationFrame(f); };
-  requestAnimationFrame(f);
 }
 $("#back").onclick = () => { if (si > 0) go(si - 1, -1); };
 $("#go0").onclick = () => go(1);
 $("#go1").onclick = () => {
-  const email = $("#email").value.trim(), nama = $("#nama").value.trim();
+  const email = $("#email").value.trim(), nama = $("#nama").value.trim(), t = $("#tujuan").value.trim();
   if (!/^\S+@\S+\.\S+$/.test(email)) return $("#e1").textContent = "Email belum valid ya.";
   if (nama.length < 2) return $("#e1").textContent = "Nama lengkap jangan lupa diisi.";
-  $("#e1").textContent = ""; info.email = email; info.nama = nama; go(2);
+  if (!t) return $("#e1").textContent = "Tujuan peminjaman belum diisi.";
+  if (!info.driver) return $("#e1").textContent = "Pilih drivernya dulu ya.";
+  $("#e1").textContent = ""; info.email = email; info.nama = nama; info.tujuan = t; go(2);
 };
 DRIVERS.forEach((d, i) => {
   const b = document.createElement("button"); b.type = "button"; b.className = "chip";
@@ -86,12 +83,6 @@ DRIVERS.forEach((d, i) => {
   b.onclick = () => { document.querySelectorAll("#drv .chip").forEach(c => c.classList.remove("on")); b.classList.add("on"); info.driver = d; };
   $("#drv").appendChild(b);
 });
-$("#go2").onclick = () => {
-  const t = $("#tujuan").value.trim();
-  if (!t) return $("#e2").textContent = "Tujuan peminjaman belum diisi.";
-  if (!info.driver) return $("#e2").textContent = "Pilih drivernya dulu ya.";
-  $("#e2").textContent = ""; info.tujuan = t; go(3);
-};
 
 /* ---------- slider halus + interaksi emoji ---------- */
 let v = .5, drag = false, anim = 0, atL = false, atR = false, lastLv = -1, bt = 0;
@@ -146,7 +137,7 @@ function showQ(i) {
   qi = i; cancelAnimationFrame(anim); $("#bub").classList.remove("show");
   $("#qn").textContent = "PERTANYAAN " + (i + 1) + " DARI " + Q.length;
   $("#qt").textContent = Q[i][0]; $("#qh").textContent = Q[i][1];
-  $("#next").textContent = i === Q.length - 1 ? "Lanjut ke langkah terakhir" : "Lanjut";
+  $("#next").textContent = i === Q.length - 1 ? "Lanjut ke saran dan masukan" : "Next>>";
   const a = ans[i]; lastLv = -1; atL = atR = false;
   if (a) { touched(); paint((a - 1) / 4, true); $("#next").disabled = false; }
   else { th.classList.add("hint"); $("#gh").style.display = ""; paint(.5, true); $("#next").disabled = true; }

@@ -1,6 +1,6 @@
 /* ====== PENGATURAN ====== */
 const SCRIPT_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
-const DRIVERS = ["Driver 1", "Driver 2", "Driver 3"]; // ganti dengan nama driver
+const DRIVERS = ["Sandi Suhendra", "Topa"]; // ganti dengan nama driver
 const Q = [
   ["KEPATUHAN DRIVER TERHADAP ATURAN LALU LINTAS", "Rambu, batas kecepatan, dan sikap ke pengguna jalan lain"],
   ["KETEPATAN WAKTU", "Berangkat dan tiba sesuai jadwal"],
@@ -10,7 +10,7 @@ const Q = [
   ["KESIAPAN & KONDISI KENDARAAN", "AC, ban, lampu, dan kelayakan mobil"],
   ["KOMUNIKASI & KONFIRMASI JADWAL", "Konfirmasi rute, jadwal, dan info keterlambatan"]
 ];
-const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Nyetirnya nyaman 😌"];
+const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Mobil kurang enak", "Nyetirnya nyaman 😌"];
 const LEVELS = ["Sangat Kurang", "Kurang", "Cukup", "Baik", "Sangat Baik"];
 const BAD = ["Waduh, segitu parahnya? 😱", "Aduh, maaf ya! Kami perbaiki 🙏", "Yah… ceritain di komentar dong 😢"];
 const GOOD = ["WOW! Juara banget! 🏆", "Mantap jiwa! 🔥", "Driver terbaik sejagat! 🌟", "Yeay! Bikin dia terbang ✨"];

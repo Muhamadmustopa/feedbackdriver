@@ -2,6 +2,8 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#eef3ff">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Feedback Driver | PT Mitra Asa Pratama</title>
 <link rel="stylesheet" href="style.css">
@@ -21,7 +23,7 @@
 
     <section class="screen" id="id">
       <div class="eyebrow">Lengkapi dulu yuk!</div>
-      <h1></h1>
+      <h1>User</h1>
       <label for="email">Email</label>
       <input id="email" type="email" inputmode="email" placeholder="nama@perusahaan.com" autocomplete="email">
       <label for="nama">Nama lengkap</label>
@@ -35,6 +37,8 @@
     </section>
 
     <section class="screen" id="q">
+      <div class="dots" id="dots"></div>
+      <div class="qicon" id="qic"></div>
       <div class="eyebrow" id="qn"></div>
       <div class="qt" id="qt"></div>
       <p class="qh" id="qh"></p>
@@ -43,13 +47,14 @@
       <div class="sl" id="sl" tabindex="0" role="slider" aria-valuemin="1" aria-valuemax="5" aria-valuenow="3" aria-label="Penilaian">
         <div class="trk" id="trk"><div class="th hint" id="th"></div></div>
       </div>
+      <div class="ends"><span>Kurang</span><span>Sangat baik</span></div>
       <div class="gh" id="gh">👆 geser bulatannya</div>
       <button class="btn" id="next" disabled>Next&gt;&gt;</button>
     </section>
 
     <section class="screen" id="cm">
       <div class="eyebrow">SARAN DAN MASUKAN</div>
-      <h1>Ada pesan buat driver atau kendaraan operasional?</h1>
+      <h1>Ada pesan buat driver?</h1>
       <p class="sub">Opsional. Ketuk salah satu atau tulis sendiri.</p>
       <div class="chips" id="qc" style="margin-bottom:12px"></div>
       <textarea id="cmt" rows="3" placeholder="Tulis pesan atau saran…"></textarea>
@@ -61,12 +66,14 @@
       <div class="stage"><div class="fl"><div class="fw"><div class="fi" id="fd"></div></div></div></div>
       <h1 id="dt">Terima kasih!</h1>
       <p class="sub" id="ds"></p>
+      <div class="bars" id="bars"></div>
       <div id="sum"></div>
       <button class="btn" onclick="location.reload()">Selesai</button>
     </section>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
 <script src="script.js"></script>
 </body>
 </html>

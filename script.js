@@ -3,12 +3,12 @@ const SCRIPT_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
 const DRIVERS = ["Sandi Suhendra", "Topa"]; // ganti dengan nama driver
 const Q = [
   ["KEPATUHAN DRIVER TERHADAP ATURAN LALU LINTAS", "Rambu, batas kecepatan, dan sikap ke pengguna jalan lain"],
-  ["KETEPATAN WAKTU", "Berangkat dan tiba sesuai jadwal"],
+  ["KETEPATAN WAKTU ANTAR JEMPUT SAMPAI LOKASI TUJUAN", "Berangkat dan tiba sesuai estimasi"],
   ["KESELAMATAN & KENYAMANAN BERKENDARA", "Pengereman, kecepatan, dan gaya mengemudi"],
   ["SIKAP & KERAMAHAN DRIVER", "Sopan, membantu, dan komunikatif"],
   ["KEBERSIHAN KENDARAAN", "Kondisi interior dan eksterior mobil"],
-  ["KESIAPAN & KONDISI KENDARAAN", "AC, ban, lampu, dan kelayakan mobil"],
-  ["KOMUNIKASI & KONFIRMASI JADWAL", "Konfirmasi rute, jadwal, dan info keterlambatan"]
+  ["TINGKAT KENYAMANAN PENGENDARA", "AC, ban, lampu, dan kelayakan mobil"],
+  ["INISIATIF PELAYANAN BANTUAN OLEH PENGEMUDI ATAU TANGGUNG JAWAB PENGEMUDI BILA DALAM KEADAAN DARURAT ", "Konfirmasi rute, jadwal, dan sigap untuk bantuan"]
 ];
 const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Nyetirnya nyaman 😌"];
 const LEVELS = ["Sangat Kurang", "Kurang", "Cukup", "Baik", "Sangat Baik"];

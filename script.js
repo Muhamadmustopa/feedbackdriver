@@ -1,19 +1,21 @@
 /* ====== PENGATURAN ====== */
 const SCRIPT_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
-const DRIVERS = ["Sandi Suhendra", "Topa"]; // ganti dengan nama driver
+const DRIVERS = ["Sandi Suhendra","User"]; // ganti dengan nama driver
 const Q = [
-  ["KEPATUHAN DRIVER TERHADAP ATURAN LALU LINTAS", "Rambu, batas kecepatan, dan sikap ke pengguna jalan lain"],
-  ["KETEPATAN WAKTU ANTAR JEMPUT SAMPAI LOKASI TUJUAN", "Berangkat dan tiba sesuai estimasi"],
-  ["KESELAMATAN & KENYAMANAN BERKENDARA", "Pengereman, kecepatan, dan gaya mengemudi"],
-  ["SIKAP & KERAMAHAN DRIVER", "Sopan, membantu, dan komunikatif"],
-  ["KEBERSIHAN KENDARAAN", "Kondisi interior dan eksterior mobil"],
-  ["TINGKAT KENYAMANAN PENGENDARA", "AC, ban, lampu, dan kelayakan mobil"],
-  ["INISIATIF PELAYANAN BANTUAN OLEH PENGEMUDI ATAU TANGGUNG JAWAB PENGEMUDI BILA DALAM KEADAAN DARURAT ", "Konfirmasi rute, jadwal, dan sigap untuk bantuan"]
+  ["KEPATUHAN DRIVER TERHADAP ATURAN LALU LINTAS", "Rambu, batas kecepatan, dan sikap ke pengguna jalan lain", "🚦", "Lalu lintas"],
+  ["KETEPATAN WAKTU", "Berangkat dan tiba sesuai jadwal", "⏱️", "Ketepatan waktu"],
+  ["KESELAMATAN & KENYAMANAN BERKENDARA", "Pengereman, kecepatan, dan gaya mengemudi", "🛡️", "Keselamatan"],
+  ["SIKAP & KERAMAHAN DRIVER", "Sopan, membantu, dan komunikatif", "🤝", "Keramahan"],
+  ["KEBERSIHAN KENDARAAN", "Kondisi interior dan eksterior mobil", "🧼", "Kebersihan"],
+  ["KESIAPAN & KONDISI KENDARAAN", "AC, ban, lampu, dan kelayakan mobil", "🔧", "Kesiapan"],
+  ["KOMUNIKASI & KONFIRMASI JADWAL", "Konfirmasi rute, jadwal, dan info keterlambatan", "💬", "Komunikasi"]
 ];
+const CHEER = ["Mantap! 1 dari 7 ✨", "Lanjut terus! 2 dari 7 💪", "Setengah jalan! 🔥", "Dikit lagi! 4 dari 7 😄", "Hampir selesai! 5 dari 7 🚀", "Tinggal 1 lagi! 🎯"];
+const TAP = ["Mantap Deh 😆", "Eh, jangan dicolek 😝", "Geser sliderku dong 👇", "Kamu lucu deh 😄"];
 const QUICK = ["Drivernya ramah banget 👍", "Mobil bersih dan wangi ✨", "Perlu lebih tepat waktu ⏰", "Nyetirnya nyaman 😌"];
 const LEVELS = ["Sangat Kurang", "Kurang", "Cukup", "Baik", "Sangat Baik"];
-const BAD = ["Waduh, segitu parahnya? 😱", "Aduh, maaf ya! Kami perbaiki 🙏", "Yah… ceritain di komentar dong 😢"];
-const GOOD = ["WOW! Juara banget! 🏆", "Mantap jiwa! 🔥", "Driver terbaik sejagat! 🌟", "Yeay! Bikin dia terbang ✨"];
+const BAD = ["Masukan kamu cukup berarti", "Aduh, maaf ya! Kami perbaiki 🙏", "Yah… ceritain di komentar dong 😢"];
+const GOOD = ["WOW! Juara banget! 🏆", "Mantap jiwa! 🔥", "Driver terbaik se MAP Raya 🌟", "Yeay! Driver Andalan"];
 /* ======================== */
 
 const $ = s => document.querySelector(s);
@@ -57,6 +59,8 @@ function Face(host) {
 const S = ["w", "id", ...Q.map((_, i) => "q" + i), "cm", "done"];
 let si = 0, qi = 0, info = {}, ans = new Array(Q.length).fill(0);
 const FQ = Face($("#fq")), FD = Face($("#fd"));
+const dots = Q.map(() => { const d = document.createElement("i"); d.className = "dot"; $("#dots").appendChild(d); return d; });
+function toast(t) { const e = $("#toast"); e.textContent = t; e.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => e.classList.remove("show"), 1300); }
 
 function go(n, dir = 1) {
   si = n; const k = S[n], id = k[0] === "q" && k !== "q" ? "q" : k;
@@ -102,8 +106,10 @@ function edge(side) {
 function paint(nv, quiet) {
   v = clamp(nv); const h = FQ(v); setHue(h);
   th.style.left = v * 100 + "%";
+  if (!quiet) dots[qi].style.background = "hsl(" + h + " 85% 52%)";
   const lv = Math.round(v * 4);
-  if (lv !== lastLv) { lastLv = lv; const l = $("#lvl"); l.textContent = LEVELS[lv]; l.classList.remove("pop"); void l.offsetWidth; l.classList.add("pop"); sl.setAttribute("aria-valuenow", lv + 1); }
+  if (lv !== lastLv) { const first = lastLv < 0; lastLv = lv;
+    if (!quiet && !first) { const w = $("#fwq"); w.classList.remove("pulse"); void w.offsetWidth; w.classList.add("pulse"); if (navigator.vibrate) navigator.vibrate(8); } const l = $("#lvl"); l.textContent = LEVELS[lv]; l.classList.remove("pop"); void l.offsetWidth; l.classList.add("pop"); sl.setAttribute("aria-valuenow", lv + 1); }
   if (!quiet) {
     if (v <= .01) { if (!atL) { atL = true; edge(-1); } } else if (v > .12) atL = false;
     if (v >= .99) { if (!atR) { atR = true; edge(1); } } else if (v < .88) atR = false;
@@ -137,12 +143,19 @@ function showQ(i) {
   qi = i; cancelAnimationFrame(anim); $("#bub").classList.remove("show");
   $("#qn").textContent = "PERTANYAAN " + (i + 1) + " DARI " + Q.length;
   $("#qt").textContent = Q[i][0]; $("#qh").textContent = Q[i][1];
+  const ic = $("#qic"); ic.textContent = Q[i][2]; ic.classList.remove("pop"); void ic.offsetWidth; ic.classList.add("pop");
+  dots.forEach((d, n) => { d.classList.toggle("cur", n === i); if (!ans[n] && n !== i) d.style.background = ""; });
+  if (!ans[i]) dots[i].style.background = "";
   $("#next").textContent = i === Q.length - 1 ? "Lanjut ke saran dan masukan" : "Next>>";
   const a = ans[i]; lastLv = -1; atL = atR = false;
   if (a) { touched(); paint((a - 1) / 4, true); $("#next").disabled = false; }
   else { th.classList.add("hint"); $("#gh").style.display = ""; paint(.5, true); $("#next").disabled = true; }
 }
-$("#next").onclick = () => go(si + 1);
+$("#next").onclick = () => { if (qi < Q.length - 1) toast(CHEER[qi]); go(si + 1); };
+$("#fwq").addEventListener("click", () => {
+  if (drag) return; const w = $("#fwq"); w.classList.remove("shake", "jump"); void w.offsetWidth; w.classList.add("jump");
+  bubble(TAP[Math.floor(Math.random() * TAP.length)]);
+});
 
 /* ---------- komentar & kirim ---------- */
 QUICK.forEach(t => {
@@ -162,6 +175,8 @@ $("#send").onclick = async () => {
     $("#dt").textContent = "Terima kasih, " + info.nama.split(" ")[0] + "!";
     $("#ds").textContent = avg >= 4.3 ? "Wah, driver kita keren ya 🎉" : "Masukanmu sangat berarti. Kami akan terus memperbaiki 🙏";
     $("#sum").innerHTML = "<div class='sumr'><span>Driver</span><b>" + info.driver + "</b></div><div class='sumr'><span>Rata-rata skor</span><b>" + avg + " / 5</b></div>" + (demo ? "<p class='sub' style='margin-top:12px'>Mode demo: URL Apps Script belum diisi, data belum dikirim.</p>" : "");
+    $("#bars").innerHTML = ans.map((a, i) => "<div class='brow'><span>" + Q[i][3] + "</span><div class='bt'><i data-w='" + a / 5 * 100 + "' style='background:hsl(" + hueOf((a - 1) / 4) + " 80% 50%)'></i></div><b>" + a + "</b></div>").join("");
+    setTimeout(() => document.querySelectorAll("#bars i").forEach(e => e.style.width = e.dataset.w + "%"), 250);
     if (avg >= 4) setTimeout(() => confetti($("#fd")), 300);
   } catch (err) {
     $("#e3").textContent = "Gagal mengirim. Periksa koneksi lalu coba lagi.";
